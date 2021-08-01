@@ -1,22 +1,18 @@
-import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import SearchModal from "../components/SearchModal";
 
-
 export default function Home() {
-  const router = useRouter();
-  
   return (
     <Layout>
       <div className="d-flex flex-1 justify-content-center align-content-center">
-        <Link as="/search" href="/">
+        <Link href="/">
           <button type="button" className="btn btn-primary">
             Start inquiry
           </button>
         </Link>
       </div>
-      <SearchModal isOpen={!!router.asPath.includes('search')} />
+      <SearchModal isOpen />
     </Layout>
   );
 }
