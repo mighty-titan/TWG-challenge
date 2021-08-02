@@ -16,7 +16,7 @@ type Props = {
 const SearchModal = ({ isOpen }: Props) => {
   const router = useRouter();
   const urlParams = new URLSearchParams(router.asPath.split("?")[1]);
-  const searchQuery = urlParams.get("search");
+  const searchQuery = urlParams.get("query");
   const [value, setValue] = useState(searchQuery || "");
   const [options, setOptions] = useState<Products | []>([]);
   const [isLoading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ const SearchModal = ({ isOpen }: Props) => {
   const onOptionsLoad = async ({ value }: { value: string }) => {
     setLoading(true);
 
-    const data = await fetcher(`/api/products?search=${value}`);
+    const data = await fetcher(`/api/products?query=${value}`);
     const optionsFromQuery = mapProductsToSuggestions(data);
 
     if (data && data.length > 0) setOptions(optionsFromQuery);
