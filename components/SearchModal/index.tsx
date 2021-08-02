@@ -5,7 +5,7 @@ import { fetcher } from "../../helpers";
 import AutosuggestInput from "../AutosuggestInput";
 import { CloseIcon } from "../Icons";
 import styles from "./SearchModal.module.css";
-import debounce from 'lodash.debounce';
+import debounce from "lodash.debounce";
 import { mapProductsToSuggestions } from "../../helpers/dataTransform";
 import { useRouter } from "next/dist/client/router";
 
@@ -15,37 +15,37 @@ type Props = {
 
 const SearchModal = ({ isOpen }: Props) => {
   const router = useRouter();
-  const urlParams = new URLSearchParams(router.asPath.split('?')[1])
-  const searchQuery = urlParams.get('search');
-  const [option, setOption] = useState(searchQuery || '');
+  const urlParams = new URLSearchParams(router.asPath.split("?")[1]);
+  const searchQuery = urlParams.get("search");
+  const [value, setValue] = useState(searchQuery || "");
   const [options, setOptions] = useState<Products | []>([]);
   const [isLoading, setLoading] = useState(false);
 
-
   const onOptionsLoad = async ({ value }: { value: string }) => {
-    setLoading(true)
+    setLoading(true);
 
-    const data = await fetcher(`/api/products?search=${value}`);  
+    const data = await fetcher(`/api/products?search=${value}`);
     const optionsFromQuery = mapProductsToSuggestions(data);
 
-    if(data && data.length > 0) setOptions(optionsFromQuery);
-    else setOptions([])
-    
-    setLoading(false)
+    if (data && data.length > 0) setOptions(optionsFromQuery);
+    else setOptions([]);
+
+    setLoading(false);
   };
 
-  const debouncedLoad = useMemo(() =>  debounce(onOptionsLoad, 250), [])
+  const debouncedLoad = useMemo(() => debounce(onOptionsLoad, 250), []);
   const onClear = () => setOptions([]);
+  const handleChange = (
+    event: React.FormEvent<HTMLInputElement>,
+    { newValue }: { newValue: string }
+  ) => setValue(newValue);
 
   const inputProps = {
-    value: option,
+    value,
     placeholder: "Machine name",
-    onChange: (
-      event: React.FormEvent<HTMLInputElement>,
-      { newValue }: { newValue: string }
-    ) => setOption(newValue),
+    onChange: handleChange,
   };
-  
+
   return (
     <Modal
       isOpen={isOpen}
