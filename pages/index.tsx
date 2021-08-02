@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <Layout>
       <div className="d-flex justify-content-center align-items-center h-100">
-        <Link as="/products" href="/">
+        <Link href="/products">
           <button type="button" className="btn btn-primary">
             Start inquiry
           </button>

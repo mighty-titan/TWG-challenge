@@ -38,7 +38,14 @@ const SearchModal = ({ isOpen }: Props) => {
   const handleChange = (
     event: React.FormEvent<HTMLInputElement>,
     { newValue }: { newValue: string }
-  ) => setValue(newValue);
+  ) => {    
+    router.push({
+      pathname: router.pathname,
+      query: { query: newValue }
+    }, 
+    undefined, { shallow: true })
+    setValue(newValue)
+  };
 
   const inputProps = {
     value,
