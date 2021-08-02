@@ -6,45 +6,27 @@ import AutosuggestInput from "../AutosuggestInput";
 import { CloseIcon } from "../Icons";
 import styles from "./SearchModal.module.css";
 import debounce from 'lodash.debounce';
+import { mapProductsToSuggestions } from "../../helpers/dataTransform";
+import { useRouter } from "next/dist/client/router";
 
-const customStyles = {
-  groupHeading: () => ({
-    fontSize: 18,
-    fontWeight: 700,
-    paddingLeft: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    background: "#ededed",
-  }),
-  option: () => ({
-    fontSize: 15,
-    paddingLeft: 20,
-    paddingTop: 5,
-    paddingBottom: 5,
-  }),
-};
 type Props = {
   isOpen: boolean;
 };
 
 const SearchModal = ({ isOpen }: Props) => {
-  const [option, setOption] = useState("");
-  const [options, setOptions] = useState([]);
+  const router = useRouter();
+  const urlParams = new URLSearchParams(router.asPath.split('?')[1])
+  const searchQuery = urlParams.get('search');
+  const [option, setOption] = useState(searchQuery || '');
+  const [options, setOptions] = useState<Products | []>([]);
   const [isLoading, setLoading] = useState(false);
+
 
   const onOptionsLoad = async ({ value }: { value: string }) => {
     setLoading(true)
 
     const data = await fetcher(`/api/products?search=${value}`);  
-    const optionsFromQuery = data.map((group) => ({
-      ...group,
-      title: group.name,
-      suggestions: group.products.map((prod) => ({
-        ...prod,
-        title: prod.name,
-        id: prod.typeId,
-      })),
-    }));
+    const optionsFromQuery = mapProductsToSuggestions(data);
 
     if(data && data.length > 0) setOptions(optionsFromQuery);
     else setOptions([])
@@ -52,7 +34,7 @@ const SearchModal = ({ isOpen }: Props) => {
     setLoading(false)
   };
 
-  const debouncedLoad = useMemo(() =>  debounce(onOptionsLoad, 150), [])
+  const debouncedLoad = useMemo(() =>  debounce(onOptionsLoad, 250), [])
   const onClear = () => setOptions([]);
 
   const inputProps = {
@@ -63,7 +45,7 @@ const SearchModal = ({ isOpen }: Props) => {
       { newValue }: { newValue: string }
     ) => setOption(newValue),
   };
-
+  
   return (
     <Modal
       isOpen={isOpen}

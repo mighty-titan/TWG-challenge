@@ -10,13 +10,13 @@ export default function Home() {
   return (
     <Layout>
       <div className="d-flex flex-1 justify-content-center align-items-center h-100">
-        <Link as="/search" href="/">
+        <Link as="/products" href="/">
           <button type="button" className="btn btn-primary">
             Start inquiry
           </button>
         </Link>
       </div>
-      <SearchModal isOpen={!!router.asPath.includes('search')} />
+      <SearchModal isOpen={!!router.asPath.includes('products')} />
     </Layout>
   );
 }

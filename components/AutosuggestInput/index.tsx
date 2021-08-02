@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Autosuggest from "react-autosuggest";
 import Loader from "../Loader";
 import theme from "./InputTheme.module.css";
@@ -42,13 +42,31 @@ const AutosuggestInput = ({
   onOptionsLoad,
   isLoading,
 }: Props) => {
-  const renderSuggestionContainer = ({ containerProps, children }) => {
+  const inputRef = useRef<any>(null);
+  const renderSuggestionContainer = ({
+    containerProps,
+    children,
+  }: {
+    containerProps: React.HTMLProps<HTMLDivElement>;
+    children: React.ReactChild;
+  }) => {
+    console.log(containerProps);
+
     return isLoading ? (
-      <div {...containerProps}><Loader /></div>
+      <div {...containerProps}>
+        <Loader />
+      </div>
     ) : (
       <div {...containerProps}>{children}</div>
     );
   };
+
+  useEffect(() => {
+    if (inputProps.value && inputRef.current) {
+      console.log("asdasdas", typeof inputRef.current.input.focus);
+      inputRef.current.input.focus();
+    }
+  }, []);
 
   return (
     <Autosuggest
@@ -63,6 +81,7 @@ const AutosuggestInput = ({
       renderSuggestionsContainer={renderSuggestionContainer}
       getSectionSuggestions={getSectionSuggestions}
       inputProps={inputProps}
+      ref={inputRef}
     />
   );
 };
