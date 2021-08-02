@@ -35,9 +35,7 @@ const SearchModal = ({ isOpen }: Props) => {
   const onOptionsLoad = async ({ value }: { value: string }) => {
     setLoading(true)
 
-    const data = await fetcher(`/api/products?search=${value}`);
-    console.log(data);
-    
+    const data = await fetcher(`/api/products?search=${value}`);  
     const optionsFromQuery = data.map((group) => ({
       ...group,
       title: group.name,
