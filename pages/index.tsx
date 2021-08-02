@@ -9,7 +9,7 @@ export default function Home() {
   
   return (
     <Layout>
-      <div className="d-flex flex-1 justify-content-center align-content-center">
+      <div className="d-flex flex-1 justify-content-center align-items-center h-100">
         <Link as="/search" href="/">
           <button type="button" className="btn btn-primary">
             Start inquiry

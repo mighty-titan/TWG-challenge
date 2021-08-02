@@ -5,6 +5,9 @@
   right: 0;
   bottom: 0;
   z-index: 1100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .searchModal {
@@ -23,6 +26,8 @@
     overflow: hidden;
     border-radius: 10px;
     border: 1px solid black;
+    max-width: 500px;
+    max-height: 500px;
   }
 }
 
