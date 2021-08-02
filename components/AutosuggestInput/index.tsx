@@ -1,5 +1,6 @@
 import React from "react";
 import Autosuggest from "react-autosuggest";
+import Loader from "../Loader";
 import theme from "./InputTheme.module.css";
 
 type Suggestion = {
@@ -23,6 +24,7 @@ type Props = {
   };
   onClear: () => void;
   onOptionsLoad: ({ value }: { value: string }) => void;
+  isLoading: boolean;
 };
 
 const getSuggestionValue = ({ name }: Suggestion) => name;
@@ -30,6 +32,7 @@ const renderSuggestion = ({ name }: Suggestion) => <span>{name}</span>;
 const renderSectionTitle = (section: Section) => (
   <strong>{section.title}</strong>
 );
+
 const getSectionSuggestions = (section: Section) => section.suggestions;
 
 const AutosuggestInput = ({
@@ -37,7 +40,16 @@ const AutosuggestInput = ({
   inputProps,
   onClear,
   onOptionsLoad,
+  isLoading,
 }: Props) => {
+  const renderSuggestionContainer = ({ containerProps, children }) => {
+    return isLoading ? (
+      <div {...containerProps}><Loader /></div>
+    ) : (
+      <div {...containerProps}>{children}</div>
+    );
+  };
+
   return (
     <Autosuggest
       theme={theme}
@@ -48,6 +60,7 @@ const AutosuggestInput = ({
       getSuggestionValue={getSuggestionValue}
       renderSuggestion={renderSuggestion}
       renderSectionTitle={renderSectionTitle}
+      renderSuggestionsContainer={renderSuggestionContainer}
       getSectionSuggestions={getSectionSuggestions}
       inputProps={inputProps}
     />
