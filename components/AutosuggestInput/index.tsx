@@ -28,7 +28,9 @@ type Props = {
 };
 
 const getSuggestionValue = ({ name }: Suggestion) => name;
+
 const renderSuggestion = ({ name }: Suggestion) => <span>{name}</span>;
+
 const renderSectionTitle = (section: Section) => (
   <strong>{section.title}</strong>
 );
@@ -43,6 +45,7 @@ const AutosuggestInput = ({
   isLoading,
 }: Props) => {
   const inputRef = useRef<any>(null);
+
   const renderSuggestionContainer = ({
     containerProps,
     children,
@@ -50,8 +53,6 @@ const AutosuggestInput = ({
     containerProps: React.HTMLProps<HTMLDivElement>;
     children: React.ReactChild;
   }) => {
-    console.log(containerProps);
-
     return isLoading ? (
       <div {...containerProps}>
         <Loader />
@@ -63,10 +64,9 @@ const AutosuggestInput = ({
 
   useEffect(() => {
     if (inputProps.value && inputRef.current) {
-      console.log("asdasdas", typeof inputRef.current.input.focus);
       inputRef.current.input.focus();
     }
-  }, []);
+  });
 
   return (
     <Autosuggest
