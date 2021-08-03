@@ -15,7 +15,7 @@ type Props = {
 
 const SearchModal = ({ isOpen }: Props) => {
   const router = useRouter();
-  const urlParams = new URLSearchParams(router.asPath.split("?")[1]);
+  const urlParams = new URLSearchParams(router?.asPath.split("?")[1]);
   const searchQuery = urlParams.get("query");
   const [value, setValue] = useState(searchQuery || "");
   const [options, setOptions] = useState<Products | []>([]);
@@ -58,11 +58,12 @@ const SearchModal = ({ isOpen }: Props) => {
       isOpen={isOpen}
       overlayClassName={styles.searchModalContainer}
       className={styles.searchModal}
+      ariaHideApp={false}
     >
       <div className="d-flex justify-content-between align-content-center bg-light px-4 py-3">
         <h2 className="mb-0">DIRECT REQUEST</h2>
         <Link href="/">
-          <a>
+          <a data-testid="closeModalButton">
             <CloseIcon />
           </a>
         </Link>
